@@ -1,19 +1,44 @@
 package ru.marketplace.controller;
 
 
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.beans.factory.annotation.Autowired;
 
-@Controller
-@RequestMapping("/product")
+import org.springframework.web.bind.annotation.*;
+import ru.marketplace.entity.Product;
+import ru.marketplace.service.ProductService;
+
+import java.util.List;
+
+
+@RestController
 public class ProductController {
 
-    @RequestMapping(value = "/get", method = RequestMethod.GET)
+
+    @Autowired
+    private ProductService productService;
+
+    @RequestMapping(value = "/products", method = RequestMethod.GET)
     @ResponseBody
-    public String getProduct(ModelMap model){
-        return "Apple";
+    public List<Product> getAllProducts() {
+        return productService.getAll();
     }
+
+    @RequestMapping(value = "/products/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public Product getProduct(@PathVariable("id") long productId) {
+        return productService.getById(productId);
+    }
+
+    @RequestMapping(value = "/products", method = RequestMethod.POST)
+    @ResponseBody
+    public Product postProduct(@RequestBody Product product) {
+        return productService.save(product);
+    }
+
+    @RequestMapping(value = "/products/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public void deleteProduct(@PathVariable("id") long productId) {
+        productService.remove(productId);
+    }
+
 }
