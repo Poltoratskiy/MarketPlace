@@ -1,6 +1,7 @@
 package ru.marketplace.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -44,6 +45,7 @@ public class Market {
     @JoinTable(name = "market_products",
             joinColumns = @JoinColumn(name = "market_id", referencedColumnName = "market_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id", referencedColumnName = "product_id"))
+    @JsonIgnore
     private Set<Product> products = new HashSet<Product>();
 
     public Set<Product> getProducts() {

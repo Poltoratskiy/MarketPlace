@@ -1,10 +1,12 @@
 package ru.marketplace.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Set;
+
 import ru.marketplace.entity.*;
 
 @Entity
@@ -18,8 +20,7 @@ public class ProductType {
     private String name;
 
 
-
-    public ProductType(){
+    public ProductType() {
 
     }
 
@@ -43,18 +44,17 @@ public class ProductType {
         this.name = name;
     }
 
-    @OneToMany(mappedBy = "productType", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "productType", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnore
     private Set<Product> products;
 
     public Set<Product> getProducts() {
         return products;
     }
 
-    public void setBooks(Set<Product> products) {
+    public void setProducts(Set<Product> products) {
         this.products = products;
     }
-
-
 
 
 }

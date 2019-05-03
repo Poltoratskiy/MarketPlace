@@ -1,6 +1,7 @@
 package ru.marketplace.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -20,9 +21,6 @@ public class Product {
     private String name;
     @Column(name = "price", nullable = false)
     private Integer price;
-
-//
-
 
     public Product() {
     }
@@ -51,14 +49,16 @@ public class Product {
         this.price = price;
     }
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "productType_id")
+    @JsonIgnore
     private ProductType productType;
 
     @ManyToMany
     @JoinTable(name = "market_products",
             joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "market_id", referencedColumnName = "market_id"))
+    @JsonIgnore
     private Set<Market> markets = new HashSet<Market>();
 
     public Set<Market> getMarkets() {
@@ -76,6 +76,6 @@ public class Product {
     public void setProductType(ProductType productType) {
         this.productType = productType;
     }
-//
+
 
 }
