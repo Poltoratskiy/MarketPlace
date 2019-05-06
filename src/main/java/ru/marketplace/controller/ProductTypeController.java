@@ -38,7 +38,6 @@ public class ProductTypeController {
     }
 
 
-
     @RequestMapping(value = "/productTypes", method = RequestMethod.POST)
     @ResponseBody
     public ProductType postProduct(@RequestBody ProductType productType) {

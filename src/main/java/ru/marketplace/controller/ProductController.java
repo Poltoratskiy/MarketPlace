@@ -17,10 +17,16 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+//    @RequestMapping(value = "/products", method = RequestMethod.GET)
+//    @ResponseBody
+//    public List<Product> getAllProducts() {
+//        return productService.getAll();
+//    }
+
     @RequestMapping(value = "/products", method = RequestMethod.GET)
     @ResponseBody
-    public List<Product> getAllProducts() {
-        return productService.getAll();
+    public List<Product> getAllProductsByName(@RequestParam String name) {
+        return productService.findByName(name);
     }
 
     @RequestMapping(value = "/products/{id}", method = RequestMethod.GET)
