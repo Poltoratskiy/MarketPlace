@@ -12,9 +12,7 @@ import java.util.Set;
 @Entity
 @Table(name = "product")
 public class Product {
-    @Id
-    @GeneratedValue(generator = "increment")
-    @GenericGenerator(name = "increment", strategy = "increment")
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "product_id")
     private long id;
     @Column(name = "name", nullable = false)
@@ -23,6 +21,13 @@ public class Product {
     private Integer price;
 
     public Product() {
+    }
+
+//    ProductTypeRepository productTypeRepository;
+    public Product(String name, Integer price, Long typeId) {
+        this.name = name;
+        this.price = price;
+//        this.productType = productTypeRepository.findById(typeId).orElse(null);
     }
 
     public long getId() {
@@ -50,7 +55,7 @@ public class Product {
     }
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "productType_id")
+    @JoinColumn(name = "product_type_id")
     @JsonIgnore
     private ProductType productType;
 

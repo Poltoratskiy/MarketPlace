@@ -7,6 +7,10 @@ import org.springframework.web.bind.annotation.*;
 import ru.marketplace.entity.Product;
 import ru.marketplace.service.ProductService;
 
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+
 import java.util.List;
 
 
@@ -17,16 +21,14 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-//    @RequestMapping(value = "/products", method = RequestMethod.GET)
-//    @ResponseBody
-//    public List<Product> getAllProducts() {
-//        return productService.getAll();
-//    }
 
     @RequestMapping(value = "/products", method = RequestMethod.GET)
     @ResponseBody
-    public List<Product> getAllProductsByName(@RequestParam String name) {
-        return productService.findByName(name);
+    public List<Product> getAllProductsByName(@RequestParam(required = false) String searchQuery) {
+        if(searchQuery !=null){
+            return productService.findByName(searchQuery);
+        }
+        return productService.getAll();
     }
 
     @RequestMapping(value = "/products/{id}", method = RequestMethod.GET)
@@ -46,5 +48,6 @@ public class ProductController {
     public void deleteProduct(@PathVariable("id") long productId) {
         productService.remove(productId);
     }
+
 
 }

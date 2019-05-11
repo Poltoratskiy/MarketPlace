@@ -10,11 +10,10 @@ import java.util.Set;
 import ru.marketplace.entity.*;
 
 @Entity
-@Table(name = "productType")
+@Table(name = "\"productType\"")
 public class ProductType {
-    @Id
-    @GeneratedValue(generator = "increment")
-    @GenericGenerator(name = "increment", strategy = "increment")
+
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long id;
     @Column(name = "name", nullable = false)
     private String name;

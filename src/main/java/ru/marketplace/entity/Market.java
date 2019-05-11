@@ -12,13 +12,11 @@ import java.util.Set;
 @Table(name = "market")
 public class Market {
     @Id
-    @GeneratedValue(generator = "increment")
-    @GenericGenerator(name = "increment", strategy = "increment")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "market_id")
     private long id;
     @Column(name = "name", nullable = false)
     private String name;
-
 
 
     public Market() {

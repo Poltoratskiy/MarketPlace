@@ -40,13 +40,13 @@ public class ProductTypeController {
 
     @RequestMapping(value = "/productTypes", method = RequestMethod.POST)
     @ResponseBody
-    public ProductType postProduct(@RequestBody ProductType productType) {
+    public ProductType postProductType(@RequestBody ProductType productType) {
         return productTypeService.save(productType);
     }
 
     @RequestMapping(value = "/productTypes/{id}", method = RequestMethod.DELETE)
     @ResponseBody
-    public void deleteProduct(@PathVariable("id") long productTypeId) {
+    public void deleteProductType(@PathVariable("id") long productTypeId) {
         productTypeService.remove(productTypeId);
     }
 
