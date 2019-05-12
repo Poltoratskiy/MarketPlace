@@ -18,8 +18,8 @@ import java.util.List;
 @Component
 public class JwtTokenProvider {
 
-    @Value("${security.jwt.token.secret-key:secret}")
-    private String secretKey = "secret";
+    @Value("${security.jwt.token.secret-key:Ld0wSkWK0w2lOfDNI1QVv8PhsfXjlK4AKwiat2wSSdW/U6H8MZLExSR14MroIJPOeRU8jz21TmAmy9O6}")
+    private String secretKey = "Ld0wSkWK0w2lOfDNI1QVv8PhsfXjlK4AKwiat2wSSdW/U6H8MZLExSR14MroIJPOeRU8jz21TmAmy9O6";
 
     @Value("${security.jwt.token.expire-length:3600000}")
     private long validityInMilliseconds = 3600000; // 1h
@@ -58,9 +58,9 @@ public class JwtTokenProvider {
     }
 
     public String resolveToken(HttpServletRequest req) {
-        String bearerToken = req.getHeader("Authorization");
-        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7, bearerToken.length());
+        String token = req.getHeader("Authorization");
+        if (token != null) {
+            return token;
         }
         return null;
     }
@@ -68,7 +68,8 @@ public class JwtTokenProvider {
     public boolean validateToken(String token) {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-
+            System.out.println(claims.getBody().getExpiration().toString());
+            System.out.println(claims.getBody().getExpiration().before(new Date()));
             if (claims.getBody().getExpiration().before(new Date())) {
                 return false;
             }

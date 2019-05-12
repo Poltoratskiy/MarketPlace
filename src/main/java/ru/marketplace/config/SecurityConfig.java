@@ -24,10 +24,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-//    @Beanx
-//    public UserDetailsService userDetailsService()  {
-//        return super.userDetailsService();
-//    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -39,10 +35,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
                 .authorizeRequests()
                 .antMatchers("/auth/signin").permitAll()
-                .antMatchers(HttpMethod.GET, "/products/**").permitAll()
-//                .antMatchers(HttpMethod.DELETE, "/vehicles/**").hasRole("ADMIN")
-//                .antMatchers(HttpMethod.GET, "/v1/vehicles/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/v1/**").hasRole("ADMIN")
+//                .antMatchers(HttpMethod.GET, "/products/**").permitAll()
+//                .antMatchers(HttpMethod.GET, "/v1/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/v1/**").hasRole("CUSTOMER")
                 .anyRequest().authenticated()
             .and()
             .apply(new JwtConfigurer(jwtTokenProvider));

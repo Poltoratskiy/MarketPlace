@@ -23,7 +23,7 @@ import java.util.Arrays;
 import java.util.Optional;
 
 @SpringBootApplication
-public class Application extends SpringBootServletInitializer implements WebApplicationInitializer, CommandLineRunner {
+public class Application extends SpringBootServletInitializer implements WebApplicationInitializer {
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
@@ -45,25 +45,4 @@ public class Application extends SpringBootServletInitializer implements WebAppl
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    @Override
-    public void run(String... args) throws Exception {
-
-        this.users.save(User.builder()
-                .username("user")
-                .password(this.passwordEncoder.encode("password"))
-                .roles(Arrays.asList("ROLE_USER"))
-                .build()
-        );
-
-        this.users.save(User.builder()
-                .username("admin")
-                .password(this.passwordEncoder.encode("password"))
-                .roles(Arrays.asList("ROLE_USER", "ROLE_ADMIN"))
-                .build()
-        );
-
-//        log.debug("printing all users...");
-
-
-    }
 }

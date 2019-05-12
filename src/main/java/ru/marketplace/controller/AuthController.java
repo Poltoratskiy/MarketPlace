@@ -1,4 +1,4 @@
-package ru.marketplace.web;
+package ru.marketplace.controller;
 
 import ru.marketplace.repository.UserRepository;
 import ru.marketplace.security.jwt.JwtTokenProvider;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.marketplace.controller.form.AuthenticationRequest;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,6 +33,7 @@ public class AuthController {
     @Autowired
     UserRepository users;
 
+
     @PostMapping("/signin")
     public ResponseEntity signin(@RequestBody AuthenticationRequest data) {
 
@@ -48,4 +50,5 @@ public class AuthController {
             throw new BadCredentialsException("Invalid username/password supplied");
         }
     }
+
 }

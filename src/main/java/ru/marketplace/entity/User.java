@@ -17,7 +17,7 @@ import java.util.List;
 import static java.util.stream.Collectors.toList;
 
 @Entity
-@Table(name="users")
+@Table(name="\"user\"")
 @Data
 @Builder
 @NoArgsConstructor

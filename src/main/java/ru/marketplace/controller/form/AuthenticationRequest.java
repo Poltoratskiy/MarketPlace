@@ -1,4 +1,4 @@
-package ru.marketplace.web;
+package ru.marketplace.controller.form;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
