@@ -1,138 +1,74 @@
 package ru.marketplace.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import ru.marketplace.entity.enums.UserStatusEnum;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @Entity
-@Table(name = "\"user\"")
-public class User {
-    public User() {
-    }
-
-
+@Table(name="users")
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
-    private long id;
-//    @Column(name = "name", nullable = false)
-//    private String name;
-//
-//    @Column(name = "surname", nullable = false)
-//    private String surname;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    Long id;
 
-    @Column(name = "email", nullable = false)
-    private String email;
-
-    @Column(name = "password", nullable = false)
-    private String password;
-
-    @Column(name = "username")
+    @NotEmpty
     private String username;
 
-    public String getUsername() {
-        return username;
+    @NotEmpty
+    private String password;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Builder.Default
+    private List<String> roles = new ArrayList<>();
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.roles.stream().map(SimpleGrantedAuthority::new).collect(toList());
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-
-//    @Column(name = "birth_date")
-//    private Date birthDate;
-//
-//    @Column(name = "registration_date", nullable = false)
-//    private Date registrationDate;
-
-//    @Column(name = "role")
-//    @Enumerated(EnumType.ORDINAL)
-//    private UserStatusEnum role;
-//
-//
-
-    @ManyToMany
-    private Set<Role> roles;
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
-//    public String getSurname() {
-//        return surname;
-//    }
-//
-//    public void setSurname(String surname) {
-//        this.surname = surname;
-//    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
+    @Override
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    @Override
+    public String getUsername() {
+        return this.username;
     }
 
-//    public Date getBirthDate() {
-//        return birthDate;
-//    }
-//
-//    public void setBirthDate(Date birthDate) {
-//        this.birthDate = birthDate;
-//    }
-//
-//    public Date getRegistrationDate() {
-//        return registrationDate;
-//    }
-//
-//    public void setRegistrationDate(Date registrationDate) {
-//        this.registrationDate = registrationDate;
-//    }
-
-//    public UserStatusEnum getRole() {
-//        return role;
-//    }
-//
-//    public void setRole(UserStatusEnum role) {
-//        this.role = role;
-//    }
-
-
-
-    public long getId() {
-        return id;
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
     }
 
-//    public String getName() {
-//        return name;
-//    }
-//
-//    public void setName(String name) {
-//        this.name = name;
-//    }
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
 
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
-

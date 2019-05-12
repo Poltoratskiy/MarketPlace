@@ -6,6 +6,7 @@ import ru.marketplace.entity.User;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Transactional
 public interface UserService {
@@ -17,5 +18,7 @@ public interface UserService {
 
     void remove(long id);
 
-    User findByUsername(String username);
+    Optional<User> findByUsername(String username);
+
+
 }

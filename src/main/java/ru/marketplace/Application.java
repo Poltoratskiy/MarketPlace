@@ -1,62 +1,69 @@
 package ru.marketplace;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.WebApplicationInitializer;
-import org.springframework.web.context.ContextLoaderListener;
-import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
-import org.springframework.web.servlet.DispatcherServlet;
-import ru.marketplace.config.WebConfig;
-import ru.marketplace.entity.Role;
 import ru.marketplace.entity.User;
-import ru.marketplace.service.UserService;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.AuditorAware;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import ru.marketplace.repository.UserRepository;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRegistration;
-import java.util.ArrayList;
 import java.util.Arrays;
-
+import java.util.Optional;
 
 @SpringBootApplication
-//@ComponentScan("ru.marketplace")
-public class Application extends SpringBootServletInitializer implements WebApplicationInitializer {
+public class Application extends SpringBootServletInitializer implements WebApplicationInitializer, CommandLineRunner {
+
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
         return application.sources(Application.class);
     }
 
-
-
-
+    @Autowired
+    UserRepository users;
 
     @Autowired
-    UserService userService;
+    PasswordEncoder passwordEncoder;
+
+    @Override
+    public void run(String... args) throws Exception {
+
+        this.users.save(User.builder()
+                .username("user")
+                .password(this.passwordEncoder.encode("password"))
+                .roles(Arrays.asList("ROLE_USER"))
+                .build()
+        );
+
+        this.users.save(User.builder()
+                .username("admin")
+                .password(this.passwordEncoder.encode("password"))
+                .roles(Arrays.asList("ROLE_USER", "ROLE_ADMIN"))
+                .build()
+        );
+
+//        log.debug("printing all users...");
 
 
-
-    private final static String DISPATCHER = "dispatcher";
-
-    public void onStartup(ServletContext servletContext) throws ServletException {
-        AnnotationConfigWebApplicationContext ctx = new AnnotationConfigWebApplicationContext();
-        ctx.register(WebConfig.class);
-        servletContext.addListener(new ContextLoaderListener(ctx));
-
-        ServletRegistration.Dynamic servlet = servletContext.addServlet(DISPATCHER, new DispatcherServlet(ctx));
-
-        servlet.addMapping("/");
-        servlet.setLoadOnStartup(1);
     }
-
-
 }

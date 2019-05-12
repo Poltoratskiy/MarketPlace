@@ -6,20 +6,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.marketplace.entity.User;
-import ru.marketplace.repository.RoleRepository;
+//import ru.marketplace.repository.RoleRepository;
 import ru.marketplace.repository.UserRepository;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
 public class UserServiceImpl implements UserService {
+
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private RoleRepository roleRepository;
+//    @Autowired
+//    private RoleRepository roleRepository;
 
     @Override
     public List<User> getAll() {
@@ -46,8 +48,10 @@ public class UserServiceImpl implements UserService {
 //        userRepository.save(user);
 //    }
 
+
+
     @Override
-    public User findByUsername(String username) {
+    public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 }
