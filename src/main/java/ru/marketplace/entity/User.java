@@ -35,6 +35,7 @@ public class User implements UserDetails {
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
+    @CollectionTable(name = "user_role")
     private List<String> roles = new ArrayList<>();
 
     @Override
@@ -51,6 +52,8 @@ public class User implements UserDetails {
     public String getUsername() {
         return this.username;
     }
+
+
 
     @Override
     public boolean isAccountNonExpired() {

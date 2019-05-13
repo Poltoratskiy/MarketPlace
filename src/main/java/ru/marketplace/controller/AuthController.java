@@ -1,5 +1,7 @@
 package ru.marketplace.controller;
 
+import org.springframework.http.HttpStatus;
+import ru.marketplace.controller.form.RefreshTokenRequest;
 import ru.marketplace.repository.UserRepository;
 import ru.marketplace.security.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +20,7 @@ import ru.marketplace.controller.form.AuthenticationRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -41,14 +43,32 @@ public class AuthController {
             String username = data.getUsername();
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, data.getPassword()));
             String token = jwtTokenProvider.createToken(username, this.users.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Username " + username + "not found")).getRoles());
+            return ok(jwtTokenProvider.createTokenModel(this.users.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Username " + username + "not found")).getUsername(), token));
 
-            Map<Object, Object> model = new HashMap<>();
-            model.put("username", username);
-            model.put("token", token);
-            return ok(model);
         } catch (AuthenticationException e) {
             throw new BadCredentialsException("Invalid username/password supplied");
         }
     }
+
+
+    @PostMapping("/refresh")
+    public ResponseEntity refreshToken(@RequestBody RefreshTokenRequest data) {
+
+        try {
+            String username = data.getUserName();
+            if (jwtTokenProvider.validateToken(data.getRefreshTokenAccess())) {
+                String token = jwtTokenProvider.createToken(username, this.users.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Username " + username + "not found")).getRoles());
+                return ok(jwtTokenProvider.createTokenModel(this.users.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Username " + username + "not found")).getUsername(), token));
+            } else {
+                return ResponseEntity
+                        .status(HttpStatus.FORBIDDEN)
+                        .body("Invalid refresh token");
+            }
+        } catch (AuthenticationException e) {
+            throw new BadCredentialsException("Invalid username/password supplied");
+        }
+
+    }
+
 
 }
