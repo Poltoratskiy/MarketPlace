@@ -1,5 +1,9 @@
 package ru.marketplace.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import ru.marketplace.controller.form.RefreshTokenRequest;
 import ru.marketplace.repository.UserRepository;
@@ -24,6 +28,7 @@ import static org.springframework.http.ResponseEntity.*;
 
 @RestController
 @RequestMapping("/auth")
+@Api(value = "/auth", description = "Операции с профилем пользователя")
 public class AuthController {
 
     @Autowired
@@ -35,7 +40,10 @@ public class AuthController {
     @Autowired
     UserRepository users;
 
-
+    @ApiOperation(value = "Аутентификация пользователя")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "token",          required = true, dataType = "string", paramType = "header"),
+    })
     @PostMapping("/signin")
     public ResponseEntity signin(@RequestBody AuthenticationRequest data) {
 
@@ -50,7 +58,7 @@ public class AuthController {
         }
     }
 
-
+    @ApiOperation(value = "Обновление токена")
     @PostMapping("/refresh")
     public ResponseEntity refreshToken(@RequestBody RefreshTokenRequest data) {
 

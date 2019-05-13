@@ -1,5 +1,6 @@
 package ru.marketplace.config;
 
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import ru.marketplace.security.jwt.JwtConfigurer;
 import ru.marketplace.security.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
                 .authorizeRequests()
                 .antMatchers("/auth/**").permitAll()
+                .antMatchers("/**").permitAll()
 //                .antMatchers(HttpMethod.GET, "/products/**").permitAll()
 //                .antMatchers(HttpMethod.GET, "/v1/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/v1/**").hasRole("CUSTOMER")
@@ -42,6 +44,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
             .apply(new JwtConfigurer(jwtTokenProvider));
         //@formatter:on
+
+
+    }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring()
+                .antMatchers(
+                        "/webjars/**", "/v2/api-docs/**", "/configuration/ui/**", "/swagger-resources/**",
+                        "/configuration/security/**", "/swagger-ui.html/**", "/swagger-ui.html#/**");
     }
 
 
