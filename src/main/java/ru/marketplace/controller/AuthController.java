@@ -62,10 +62,10 @@ public class AuthController {
             } else {
                 return ResponseEntity
                         .status(HttpStatus.FORBIDDEN)
-                        .body("Invalid refresh token");
+                        .body("Expired or invalid JWT token");
             }
         } catch (AuthenticationException e) {
-            throw new BadCredentialsException("Invalid username/password supplied");
+            throw new BadCredentialsException("Expired or invalid JWT token");
         }
 
     }
