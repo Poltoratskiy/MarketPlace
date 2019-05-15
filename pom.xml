@@ -198,6 +198,8 @@
             </plugin>
 
         </plugins>
+        <finalName>marketplace</finalName>
     </build>
+
 
 </project>
