@@ -1,0 +1,4 @@
+function getColor() {
+
+    return 'black';
+}
