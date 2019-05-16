@@ -12,7 +12,21 @@ spring:
       FAIL_ON_IGNORED_PROPERTIES: false
       FAIL_ON_UNKNOWN_PROPERTIES: false
       ACCEPT_SINGLE_VALUE_AS_ARRAY: true
-    default-property-inclusion: non_empty 
+    default-property-inclusion: non_empty
+  mail:
+    default-encoding: UTF-8
+    host: smtp.gmail.com
+    username: system.developer.rus@gmail.com
+    password: 04Divepa-
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+    protocol: smtp
+    test-connection: false
 
 
   datasource:
@@ -44,4 +58,4 @@ logging:
     org.springframework.security: DEBUG
     ru.marketplace: DEBUG
   file: app.log
-  
+

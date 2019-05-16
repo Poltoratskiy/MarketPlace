@@ -14,8 +14,6 @@ public interface UserService {
 
     User getById(long id);
 
-//    void save(User product);
-
     void remove(long id);
 
     Optional<User> findByUsername(String username);
