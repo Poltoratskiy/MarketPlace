@@ -9,6 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,10 +29,24 @@ public class User implements UserDetails {
     Long id;
 
     @NotEmpty
+    @Column(unique = true)
     private String username;
 
     @NotEmpty
     private String password;
+
+    @NotEmpty
+    @Column(unique = true)
+    @Email(message = "Email should be valid")
+    private String email;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default

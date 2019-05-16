@@ -31,6 +31,7 @@ public class DataInitializer implements CommandLineRunner {
                 .username("user")
                 .password(this.passwordEncoder.encode("password"))
                 .roles(Arrays.asList("ROLE_USER"))
+                .email("user@email.com")
                 .build()
         );
 
@@ -38,6 +39,7 @@ public class DataInitializer implements CommandLineRunner {
                 .username("admin")
                 .password(this.passwordEncoder.encode("password"))
                 .roles(Arrays.asList("ROLE_USER", "ROLE_ADMIN"))
+                .email("admin@email.com")
                 .build()
         );
 
@@ -45,6 +47,7 @@ public class DataInitializer implements CommandLineRunner {
                 .username("customer")
                 .password(this.passwordEncoder.encode("password"))
                 .roles(Arrays.asList("ROLE_CUSTOMER"))
+                .email("customer@email.com")
                 .build()
         );
     }
