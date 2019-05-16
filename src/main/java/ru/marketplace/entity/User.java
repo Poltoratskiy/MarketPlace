@@ -1,12 +1,10 @@
 package ru.marketplace.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import ru.marketplace.entity.enums.GenderEnum;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -39,6 +37,27 @@ public class User implements UserDetails {
     @Column(unique = true)
     @Email(message = "Email should be valid")
     private String email;
+
+    private GenderEnum gender;
+
+    public GenderEnum getGender() {
+        return gender;
+    }
+
+    public void setGender(GenderEnum gender) {
+        this.gender = gender;
+    }
+
+    private boolean isApproved;
+
+
+    public boolean isApproved() {
+        return isApproved;
+    }
+
+    public void setApproved(boolean approved) {
+        isApproved = approved;
+    }
 
     public String getEmail() {
         return email;

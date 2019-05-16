@@ -1,6 +1,7 @@
 package ru.marketplace.config;
 
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import ru.marketplace.security.jwt.JwtConfigurer;
 import ru.marketplace.security.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
+    }
+
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
 

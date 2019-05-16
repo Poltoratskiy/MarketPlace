@@ -20,8 +20,7 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
-//    @Autowired
-//    private RoleRepository roleRepository;
+
 
     @Override
     public List<User> getAll() {
@@ -38,17 +37,20 @@ public class UserServiceImpl implements UserService {
 
     }
 
-//    @Autowired
-//    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 //
-//    @Override
-//    public void save(User user) {
-//        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-//        user.setRoles(new HashSet<>(roleRepository.findAll()));
-//        userRepository.save(user);
-//    }
+    @Override
+    public void save(User user) {
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+    }
 
+    @Override
+    public Optional<User> findByEmail(String email) {
 
+        return userRepository.findByEmail(email);
+    }
 
     @Override
     public Optional<User> findByUsername(String username) {
