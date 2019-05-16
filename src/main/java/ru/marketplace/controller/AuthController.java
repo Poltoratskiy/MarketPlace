@@ -42,7 +42,7 @@ public class AuthController {
 
     @ApiOperation(value = "Аутентификация пользователя")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "token", value = "token",          required = true, dataType = "string", paramType = "header"),
+            @ApiImplicitParam(required = true, dataType = "string", paramType = "header"),
     })
     @PostMapping("/signin")
     public ResponseEntity signin(@RequestBody AuthenticationRequest data) {

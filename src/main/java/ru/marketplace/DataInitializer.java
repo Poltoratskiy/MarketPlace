@@ -1,6 +1,7 @@
 package ru.marketplace;
 
 import lombok.Builder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import ru.marketplace.entity.User;
 
 import ru.marketplace.repository.UserRepository;
@@ -22,14 +23,14 @@ public class DataInitializer implements CommandLineRunner {
     UserRepository users;
 
     @Autowired
-    PasswordEncoder passwordEncoder;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Builder
     @Override
     public void run(String... args) throws Exception {
         this.users.save(User.builder()
                 .username("user")
-                .password(this.passwordEncoder.encode("password"))
+                .password(bCryptPasswordEncoder.encode("password"))
                 .roles(Arrays.asList("ROLE_USER"))
                 .email("user@email.com")
                 .build()
@@ -37,7 +38,7 @@ public class DataInitializer implements CommandLineRunner {
 
         this.users.save(User.builder()
                 .username("admin")
-                .password(this.passwordEncoder.encode("password"))
+                .password(bCryptPasswordEncoder.encode("password"))
                 .roles(Arrays.asList("ROLE_USER", "ROLE_ADMIN"))
                 .email("admin@email.com")
                 .build()
@@ -45,7 +46,7 @@ public class DataInitializer implements CommandLineRunner {
 
         this.users.save(User.builder()
                 .username("customer")
-                .password(this.passwordEncoder.encode("password"))
+                .password(bCryptPasswordEncoder.encode("password"))
                 .roles(Arrays.asList("ROLE_CUSTOMER"))
                 .email("customer@email.com")
                 .build()

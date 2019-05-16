@@ -169,6 +169,12 @@
             <version>${validation-api.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.9</version>
+        </dependency>
+
 
         <dependency>
             <groupId>io.springfox</groupId>
@@ -188,6 +194,11 @@
             <version>2.1.5.RELEASE</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.9</version>
+        </dependency>
 
 
     </dependencies>
