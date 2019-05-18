@@ -3,19 +3,18 @@ package ru.marketplace.service;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import ru.marketplace.entity.Product;
-import ru.marketplace.entity.ProductType;
+import ru.marketplace.entity.Category;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 @Transactional
-public interface ProductTypeService {
-    List<ProductType> getAll();
+public interface CategoryService {
+    List<Category> getAll();
 
-    ProductType getById(long id);
+    Category getById(long id);
 
-    ProductType save(ProductType product);
+    Category save(Category product);
 
     void remove(long id);
 

@@ -16,7 +16,7 @@ import java.util.List;
 import static java.util.stream.Collectors.toList;
 
 @Entity
-@Table(name="\"user\"")
+@Table(name = "\"user\"")
 @Data
 @Builder
 @NoArgsConstructor
@@ -24,7 +24,8 @@ import static java.util.stream.Collectors.toList;
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    Long id;
+    @Column(name = "id")
+    private Long id;
 
     @NotEmpty
     @Column(unique = true)
@@ -44,13 +45,25 @@ public class User implements UserDetails {
         return gender;
     }
 
+    @OneToOne(mappedBy = "user")
+    private Customer customer;
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+
     public void setGender(GenderEnum gender) {
         this.gender = gender;
     }
 
     private boolean isApproved;
 
-
+    @Column(name = "is_approved")
     public boolean isApproved() {
         return isApproved;
     }
@@ -88,7 +101,6 @@ public class User implements UserDetails {
     }
 
 
-
     @Override
     public boolean isAccountNonExpired() {
         return true;
@@ -108,4 +120,6 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+
 }
