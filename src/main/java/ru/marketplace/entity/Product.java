@@ -2,7 +2,7 @@ package ru.marketplace.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.GenericGenerator;
+import ru.marketplace.entity.enums.CurrencyEnum;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -12,22 +12,61 @@ import java.util.Set;
 @Entity
 @Table(name = "product")
 public class Product {
-    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
     private long id;
     @Column(name = "name", nullable = false)
     private String name;
+
+    @Column(name = "description", nullable = false)
+    private String description;
+
     @Column(name = "price", nullable = false)
     private Integer price;
+
+    @Column(name = "currency", nullable = false)
+    private CurrencyEnum currency;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "category_id")
+    @JsonIgnore
+    private Category category;
+
+    @ManyToMany
+    @JoinTable(name = "market_products",
+            joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "market_id", referencedColumnName = "market_id"))
+    @JsonIgnore
+    private Set<Market> markets = new HashSet<Market>();
+
+
+    @OneToOne(mappedBy = "product")
+    private LineItem lineItem;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+
+    public CurrencyEnum getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(CurrencyEnum currency) {
+        this.currency = currency;
+    }
 
     public Product() {
     }
 
-//    ProductTypeRepository productTypeRepository;
-    public Product(String name, Integer price, Long typeId) {
+    public Product(String name, Integer price) {
         this.name = name;
         this.price = price;
-//        this.productType = productTypeRepository.findById(typeId).orElse(null);
     }
 
     public long getId() {
@@ -54,18 +93,6 @@ public class Product {
         this.price = price;
     }
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "product_type_id")
-    @JsonIgnore
-    private ProductType productType;
-
-    @ManyToMany
-    @JoinTable(name = "market_products",
-            joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "market_id", referencedColumnName = "market_id"))
-    @JsonIgnore
-    private Set<Market> markets = new HashSet<Market>();
-
     public Set<Market> getMarkets() {
         return markets;
     }
@@ -74,13 +101,19 @@ public class Product {
         this.markets = markets;
     }
 
-    public ProductType getProductType() {
-        return productType;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setProductType(ProductType productType) {
-        this.productType = productType;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
+    public LineItem getLineItem() {
+        return lineItem;
+    }
 
+    public void setLineItem(LineItem lineItem) {
+        this.lineItem = lineItem;
+    }
 }
