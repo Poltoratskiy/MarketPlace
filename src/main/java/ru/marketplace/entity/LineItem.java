@@ -4,10 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "line_item")
-public class LineItem {
+public class LineItem implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +21,7 @@ public class LineItem {
 
     @Column(name = "quantity")
     @Min(value = 0L, message = "The value must be positive")
-    private Number quantity;
+    private Integer quantity;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "cart_id")
@@ -35,15 +36,21 @@ public class LineItem {
         this.product = product;
     }
 
-    public Number getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Number quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
     public LineItem() {
+    }
+
+    public LineItem(Cart cart, Product product, Integer quantity) {
+        this.cart = cart;
+        this.product = product;
+        this.quantity = quantity;
     }
 
     public Cart getCart() {
@@ -53,6 +60,9 @@ public class LineItem {
     public void setCart(Cart cart) {
         this.cart = cart;
     }
+
+
+
 
 
 }

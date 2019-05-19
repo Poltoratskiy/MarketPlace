@@ -13,17 +13,19 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Entity
 @Table(name = "customer")
 public class Customer {
-
+//todo generate
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
     @OneToOne(mappedBy = "customer")
-    private Order order;
+    @JsonIgnore
+    private Cart cart;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JsonIgnore
     private User user;
 
     public Long getCustomerId() {
@@ -42,11 +44,11 @@ public class Customer {
         this.user = user;
     }
 
-    public Order getOrder() {
-        return order;
+    public Cart getCart() {
+        return cart;
     }
 
-    public void setOrder(Order order) {
-        this.order = order;
+    public void setCart(Cart cart) {
+        this.cart = cart;
     }
 }
