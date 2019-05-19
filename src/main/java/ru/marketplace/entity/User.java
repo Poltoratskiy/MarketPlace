@@ -41,12 +41,27 @@ public class User implements UserDetails {
 
     private GenderEnum gender;
 
+    @Column(name = "is_approved")
+    private boolean isApproved;
+
+    @OneToOne(mappedBy = "user")
+    private Customer customer;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Builder.Default
+    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "role_name")
+    private List<String> roles = new ArrayList<>();
+
+
+    public boolean isApproved() {
+        return isApproved;
+    }
+
     public GenderEnum getGender() {
         return gender;
     }
 
-    @OneToOne(mappedBy = "user")
-    private Customer customer;
 
     public Customer getCustomer() {
         return customer;
@@ -61,12 +76,6 @@ public class User implements UserDetails {
         this.gender = gender;
     }
 
-    private boolean isApproved;
-
-    @Column(name = "is_approved")
-    public boolean isApproved() {
-        return isApproved;
-    }
 
     public void setApproved(boolean approved) {
         isApproved = approved;
@@ -80,10 +89,6 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Builder.Default
-    @CollectionTable(name = "user_role")
-    private List<String> roles = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

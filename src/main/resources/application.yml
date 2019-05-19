@@ -45,7 +45,6 @@ spring:
     hibernate:
       ddl-auto: create
     properties:
-      # fixes Caused by: java.sql.SQLFeatureNotSupportedException: Method org.postgresql.jdbc.PgConnection.createClob() is not yet implemented.
       hibernate.jdbc.lob.non_contextual_creation: true
 
   data:
